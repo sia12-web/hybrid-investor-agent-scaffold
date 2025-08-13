@@ -1,0 +1,16 @@
+{
+  "source": "tradingview",
+  "strategy": "MVS",
+  "symbol": "{{ticker}}",
+  "exchange": "{{exchange}}",
+  "timeframe": "5m",
+  "event_time": "{{timenow}}",
+  "side": "{{strategy.order.action}}",
+  "entry_price": "{{close}}",
+  "trigger_level": "{{plot_0}}",
+  "stop_basis": "structure|atr",
+  "atr": "{{atr}}",
+  "volume": "{{volume}}",
+  "avg_volume": "{{sma_volume}}",
+  "chart_id": "mvs_v1"
+}

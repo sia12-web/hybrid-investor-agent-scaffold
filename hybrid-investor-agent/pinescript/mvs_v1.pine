@@ -1,0 +1,35 @@
+
+//@version=5
+strategy("MVS 5m v1 (scaffold)", overlay=true, pyramiding=0, process_orders_on_close=true, initial_capital=500, commission_type=strategy.commission.percent, commission_value=0.05)
+
+emaLen = input.int(20, "EMA Len")
+dcLen  = input.int(20, "Donchian Len")
+volLen = input.int(20, "Vol Lookback")
+volMult= input.float(1.5, "Vol Mult", step=0.1)
+atrLen = input.int(14, "ATR Len")
+
+ema = ta.ema(close, emaLen)
+dcHi = ta.highest(high, dcLen)[1]
+dcLo = ta.lowest(low, dcLen)[1]
+atr = ta.atr(atrLen)
+volOK = volume >= volMult * ta.sma(volume, volLen)
+
+longBreak = close > dcHi
+shortBreak = close < dcLo
+momUp = ema > ema[1]
+momDn = ema < ema[1]
+
+longCond = longBreak and momUp and volOK
+shortCond = shortBreak and momDn and volOK
+
+plot(dcHi, "BreakoutHi", display=display.all)
+plot(dcLo, "BreakoutLo", display=display.all)
+
+if (longCond)
+    strategy.entry("LONG", strategy.long)
+if (shortCond)
+    strategy.entry("SHORT", strategy.short)
+
+// Alert placeholders
+alert_message = '{"source":"tradingview","strategy":"MVS","symbol":"{{ticker}}","exchange":"{{exchange}}","timeframe":"5m","event_time":"{{timenow}}","side":"{{strategy.order.action}}","entry_price":"{{close}}","atr":"{{atr}}","volume":"{{volume}}","avg_volume":"{{sma(' + str.tostring(volLen) + ' , volume)}}","chart_id":"mvs_v1"}'
+alertcondition(longCond or shortCond, title="MVS Signal", message=alert_message)

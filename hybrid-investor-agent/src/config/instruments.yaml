@@ -1,0 +1,30 @@
+
+# Venue-normalized instrument metadata (placeholders; refine in Phase 1)
+instruments:
+  - symbol: "BTCUSD"
+    venue: "GEMINI"
+    tick_size: 0.01
+    min_size: 0.0001
+    contract_multiplier: 1.0       # P&L = (price diff) * size
+    spread_limit_abs: 5.0
+
+  - symbol: "ETHUSD"
+    venue: "GEMINI"
+    tick_size: 0.01
+    min_size: 0.001
+    contract_multiplier: 1.0
+    spread_limit_abs: 1.5
+
+  - symbol: "EUR_USD"
+    venue: "OANDA"
+    tick_size: 0.00001
+    min_size: 1000                 # OANDA 'units'; adjust later
+    contract_multiplier: 1000.0    # approx P&L = diff * units (simplified)
+    spread_limit_abs: 0.0003
+
+  - symbol: "NAS100_USD"
+    venue: "OANDA"
+    tick_size: 0.1
+    min_size: 1
+    contract_multiplier: 1.0
+    spread_limit_abs: 2.0

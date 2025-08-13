@@ -1,0 +1,28 @@
+
+strategy: MVS
+timeframe: "5m"
+
+risk:
+  risk_per_trade_usd: 5.0         # hard cap per trade
+  rr_target: 3.0                   # minimum risk:reward
+  daily_loss_halt_R: -3.0          # stop new entries when <= -3R
+  max_concurrent_trades: 2
+  max_per_instrument: 1
+  cooldown_bars_after_loss_R: 6
+
+filters:
+  spread_atr_max: 0.2              # reject if spread/ATR exceeds this
+  min_size_units: 1
+
+params:
+  ema_len: 20
+  donchian_len: 20
+  vol_lookback: 20
+  vol_mult: 1.5
+  atr_len: 14
+  atr_k: 1.0
+
+session:
+  # For FX/CFD you may skip first/last N bars of a session; crypto 24/7
+  no_trade_first_bars: 3
+  no_trade_last_bars: 3
