@@ -25,10 +25,17 @@ jobs:
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          # If you later add requirements.txt, swap this line to: pip install -r requirements.txt
-          pip install fastapi uvicorn pytest requests python-dotenv httpx
+          pip install fastapi uvicorn pytest requests python-dotenv httpx ruff black
 
-      - name: Run tests
+      - name: Ruff (lint, no autofix)
+        run: |
+          ruff check . --format=github --exit-non-zero-on-fix --no-fix
+
+      - name: Black (format check)
+        run: |
+          black --check .
+
+      - name: Pytest
         env:
           SIGNING_SECRET: dev-secret
         run: |
