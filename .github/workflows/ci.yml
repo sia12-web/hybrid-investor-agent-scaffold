@@ -1,4 +1,4 @@
-﻿name: CI
+name: CI
 
 on:
   push:
@@ -10,6 +10,7 @@ jobs:
   test:
     runs-on: ubuntu-latest
     strategy:
+      fail-fast: false
       matrix:
         python-version: ["3.11", "3.12", "3.13"]
     steps:
@@ -29,7 +30,7 @@ jobs:
 
       - name: Ruff (lint, no autofix)
         run: |
-          ruff check . --format=github --exit-non-zero-on-fix --no-fix
+          ruff check . --output-format=github --exit-non-zero-on-fix --no-fix
 
       - name: Black (format check)
         run: |
