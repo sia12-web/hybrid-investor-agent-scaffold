@@ -1,9 +1,13 @@
-﻿import os, json, hmac, hashlib
+﻿import json
+import hmac
+import hashlib
 from fastapi.testclient import TestClient
 from local_bot.app import app
 
+
 def _sign(secret: str, body: bytes) -> str:
     return "sha256=" + hmac.new(secret.encode(), body, hashlib.sha256).hexdigest()
+
 
 def test_signal_valid_request(monkeypatch):
     secret = "test-secret"
@@ -26,6 +30,7 @@ def test_signal_valid_request(monkeypatch):
     assert data["received"]["symbol"] == "AAPL"
     assert data["received"]["qty"] == 1
 
+
 def test_signal_tampered_body(monkeypatch):
     secret = "test-secret"
     monkeypatch.setenv("SIGNING_SECRET", secret)
@@ -43,6 +48,7 @@ def test_signal_tampered_body(monkeypatch):
 
     assert r.status_code == 401
     assert r.json()["detail"] == "Invalid signature"
+
 
 def test_signal_missing_header(monkeypatch):
     secret = "test-secret"

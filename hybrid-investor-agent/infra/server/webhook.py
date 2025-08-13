@@ -1,12 +1,13 @@
-
-from fastapi import FastAPI, Request, Header, HTTPException
+from fastapi import FastAPI, Header, HTTPException
 from pydantic import BaseModel
-import os, json
+import os
+import json
 from datetime import datetime, timezone
 
 app = FastAPI()
 
 SHARED_SECRET = os.getenv("WEBHOOK_SHARED_SECRET", "change_me")
+
 
 class Alert(BaseModel):
     source: str
@@ -24,12 +25,15 @@ class Alert(BaseModel):
     avg_volume: float | None = None
     chart_id: str | None = None
 
+
 def utcnow_iso():
     return datetime.now(timezone.utc).isoformat()
+
 
 @app.get("/health")
 def health():
     return {"ok": True, "time": utcnow_iso()}
+
 
 @app.post("/alerts/mvs")
 async def alerts_mvs(alert: Alert, x_shared_secret: str | None = Header(default=None)):

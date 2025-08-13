@@ -1,6 +1,7 @@
 # Backtrader strategy stub for the MVS logic.
 import backtrader as bt
 
+
 class MVSStrategy(bt.Strategy):
     params = dict(
         ema_len=20,
@@ -21,7 +22,12 @@ class MVSStrategy(bt.Strategy):
         self.vol_ma = bt.ind.SMA(self.data.volume, period=self.p.vol_lookback)
 
         # compute the warmup needed for all indicators safely
-        self._warmup = max(self.p.ema_len, self.p.atr_len, self.p.donchian_len, self.p.vol_lookback) + 1
+        self._warmup = (
+            max(
+                self.p.ema_len, self.p.atr_len, self.p.donchian_len, self.p.vol_lookback
+            )
+            + 1
+        )
 
     def next(self):
         # Skip until we have enough bars for all indicators (prevents index errors)
@@ -37,7 +43,11 @@ class MVSStrategy(bt.Strategy):
 
         # Volume filter (guard in case a feed lacks volume)
         vol_ok = True
-        if hasattr(self.data, "volume") and self.data.volume[0] is not None and self.vol_ma[0] is not None:
+        if (
+            hasattr(self.data, "volume")
+            and self.data.volume[0] is not None
+            and self.vol_ma[0] is not None
+        ):
             vol_ok = self.data.volume[0] >= self.p.vol_mult * (self.vol_ma[0] or 0)
 
         # Example entry (stub) — real sizing handled elsewhere later

@@ -7,3 +7,5 @@ Project description here.
 Small tweak: ensure HMAC verification uses raw body bytes.
 
 Pre-commit: automatic pytest is enabled.
+
+Lint & format test.

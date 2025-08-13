@@ -1,6 +1,7 @@
-﻿from fastapi import Depends, Header, HTTPException, Request
+﻿from fastapi import Header, HTTPException, Request
 from local_bot.auth import verify_hmac_signature
 import os
+
 
 async def require_hmac(
     request: Request,
@@ -19,7 +20,9 @@ async def require_hmac(
     if not signature:
         raise HTTPException(status_code=400, detail="Missing signature header")
 
-    ok = verify_hmac_signature(secret=secret, body=body, signature_header=signature, algo="sha256")
+    ok = verify_hmac_signature(
+        secret=secret, body=body, signature_header=signature, algo="sha256"
+    )
     if not ok:
         raise HTTPException(status_code=401, detail="Invalid signature")
 

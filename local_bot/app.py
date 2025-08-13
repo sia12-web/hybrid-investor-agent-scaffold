@@ -1,9 +1,10 @@
-﻿from fastapi import FastAPI, Header, HTTPException, Request, Depends
+﻿from fastapi import FastAPI, Depends
 from local_bot.models import TradeSignal
 from local_bot.security import require_hmac
 import json
 
 app = FastAPI()
+
 
 @app.post("/signal")
 async def receive_signal(raw: bytes = Depends(require_hmac)):
